@@ -4,14 +4,20 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 interface PokemonPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
+}
+
+export async function generateStaticParams() {
+  const staticPokeonIds = Array.from({ length: 151 }, (_, i) => (i + 1).toString());
+  return staticPokeonIds.map(id => ({ id }));
 }
 
 export async function generateMetadata( props: PokemonPageProps ): Promise<Metadata> {
   try {
-    const pokemon = await getPokemon(props.params.id); 
+    const { id } = await props.params;
+    const pokemon = await getPokemon(id); 
     return {
       title: `Pokemon Detail - ${pokemon.name}`,
       description: `Detalle del Pokémon ${pokemon.name}`
@@ -28,7 +34,10 @@ export async function generateMetadata( props: PokemonPageProps ): Promise<Metad
 const getPokemon = async (id: string): Promise<Pokemon> => {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
-      cache: 'force-cache'
+      cache: 'force-cache',
+      next: {
+        revalidate: 60 * 60, // Revalida cada 60 minutos
+      },
     });
     const data = await response.json();
     return data;
@@ -40,8 +49,8 @@ const getPokemon = async (id: string): Promise<Pokemon> => {
 
 
 export default async function PokemonPage({ params }: PokemonPageProps) {
-
-  const pokemon = await getPokemon(params.id);
+  const { id } = await params;
+  const pokemon = await getPokemon(id);
 
   return (
     <div className="flex mt-5 flex-col items-center text-slate-800">
