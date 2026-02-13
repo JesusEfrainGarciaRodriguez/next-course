@@ -1,4 +1,10 @@
 import { SimpleWidget } from "@/components/SimpleWidget";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Admin - Dashboard',
+  description: 'Página principal del dashboard',
+};
 
 export default function MainPage() {
   return (
