@@ -3,17 +3,31 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { addOne, initCounterState, subtractOne } from '@/store/counter/counterSlice';
 import React, { useEffect } from 'react'
 
-interface Props {
-    value?: number;
+export interface CounterResponse {
+    method: string;
+    count: number;
 }
 
-export function CartCounter({ value = 0 }:Props) {
+const getApiCounterValue = async (): Promise<CounterResponse> => {
+    try {
+        const response = await fetch('/api/counter');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching API counter value:', error);
+        return { method: 'error', count: 0 };
+    }
+}
+
+export function CartCounter() {
     const count = useAppSelector(state => state.counter.count);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(initCounterState(value))
-    }, [dispatch, value])
+        getApiCounterValue().then(data => {
+            dispatch(initCounterState(data.count))
+        })
+    }, [dispatch]);
 
     return (
         <>
