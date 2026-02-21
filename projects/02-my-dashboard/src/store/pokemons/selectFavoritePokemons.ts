@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 
-const selectPokemonsState = (state: RootState) => state.pokemons;
+const selectPokemonsState = (state: RootState) => state.pokemons.favorites;
 
 export const selectFavoritePokemons = createSelector(
   [selectPokemonsState],

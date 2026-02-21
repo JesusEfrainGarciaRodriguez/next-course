@@ -2,20 +2,17 @@
 
 import { PokemonGrid } from "./PokemonGrid"
 import { useAppSelector } from '../../store/index';
-import { useState } from "react";
 import { selectFavoritePokemons } from "@/store/pokemons/selectFavoritePokemons";
 
 export const FavoritePokemons = () => {
     const favoritesPokemons = useAppSelector(selectFavoritePokemons);
-    const [pokemons] = useState(favoritesPokemons);
 
-
-    if (pokemons.length === 0) {
+    if (favoritesPokemons.length === 0) {
         return <NoFavorites />
     }
 
     return (
-        <PokemonGrid pokemons={ pokemons }/>
+        <PokemonGrid pokemons={ favoritesPokemons }/>
     )
 }
 
