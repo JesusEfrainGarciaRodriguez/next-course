@@ -21,12 +21,15 @@ const pokemonsSlice = createSlice({
     toggleFavorite: (state, action: PayloadAction<SimplePokemon>) => {
         const pokemon: SimplePokemon = action.payload;
         const { id } = pokemon;
-        if (!!state.favorites[id]) {
-            delete state.favorites[id];
-            return;
-        } 
+        if ( !!state.favorites[id] ) {
+        delete state.favorites[id];
+      } else {
+        state.favorites[id] = pokemon;
+      }
 
-        state.favorites[pokemon.id] = pokemon;
+      //TODO: No se debe de hacer en Redux
+      localStorage.setItem('favorite-pokemons', JSON.stringify( state.favorites ) );
+
     }
   }
 });
