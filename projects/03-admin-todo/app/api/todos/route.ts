@@ -25,3 +25,21 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: 'Failed to fetch todos' }, { status: 500 });
     }
 }
+
+
+export async function POST(request: Request) { 
+    const body = await request.json()
+
+    if (!body.description || typeof body.description !== 'string') {
+        return NextResponse.json({ message: 'Description is required and must be a string' }, { status: 400 });
+    }
+
+    const todo = await prisma.todo.create({
+        data: body
+    })
+
+    return new NextResponse(JSON.stringify({
+        message: 'Todo created successfully',
+        todo
+    }), { status: 201 } );
+}
