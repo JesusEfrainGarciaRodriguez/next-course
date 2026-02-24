@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server'
+import * as yup from 'yup'
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
@@ -26,20 +27,28 @@ export async function GET(request: NextRequest) {
     }
 }
 
+const postSchema = yup.object({
+    description: yup.string().required('Description is required'),
+    completed: yup.boolean().optional().default(false),
+})
 
 export async function POST(request: Request) { 
-    const body = await request.json()
+    try {
+        const { description, completed } = await postSchema.validate(await request.json(), { abortEarly: false })
 
-    if (!body.description || typeof body.description !== 'string') {
-        return NextResponse.json({ message: 'Description is required and must be a string' }, { status: 400 });
+        const todo = await prisma.todo.create({
+            data: { description, completed }
+        })
+
+        return new NextResponse(JSON.stringify({
+            message: 'Todo created successfully',
+            todo
+        }), { status: 201 } );
+    } catch (error) {
+        if (error instanceof yup.ValidationError) {
+            return NextResponse.json({ errors: error.errors }, { status: 400 });
+        }
+        console.error('Error validating request body:', error);
+        return NextResponse.json({ error: 'Failed to validate request body' }, { status: 500 });
     }
-
-    const todo = await prisma.todo.create({
-        data: body
-    })
-
-    return new NextResponse(JSON.stringify({
-        message: 'Todo created successfully',
-        todo
-    }), { status: 201 } );
 }
