@@ -52,3 +52,19 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Failed to validate request body' }, { status: 500 });
     }
 }
+
+export async function DELETE(request: Request) { 
+    try {
+
+        await prisma.todo.deleteMany({
+            where: { completed: true }
+        })
+
+        return new NextResponse(JSON.stringify({
+            message: 'Todo deleted successfully',
+        }), { status: 201 } );
+    } catch (error) {
+        console.error('Error deleting completed todos:', error);
+        return NextResponse.json({ error: 'Failed to delete completed todos' }, { status: 500 });
+    }
+}
