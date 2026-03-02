@@ -1,5 +1,5 @@
-import Sidebar from "../components/sidebar/Sidebar";
-import { TopMenu } from "../components/topmenu/TopMenu";
+import Sidebar from "../../components/sidebar/Sidebar";
+import { TopMenu } from "../../components/topmenu/TopMenu";
 
 export default function DashboardLayout({
   children,

@@ -18,7 +18,7 @@ export const SidebarItem = ({
     <li>
       <a
         href={path}
-        className={`relative px-4 py-3 flex items-center space-x-4 rounded-xl
+        className={`relative px-4 py-3 flex items-center space-x-4 rounded-xl hover:bg-gray-100
           ${pathName === path ? "text-white bg-gradient-to-r from-sky-600 to-cyan-400" : ""}`}
       >
         {Icon}

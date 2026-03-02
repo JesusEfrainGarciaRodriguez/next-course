@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CiBookmarkCheck, CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
+import { IoCheckboxOutline, IoListOutline } from "react-icons/io5";
 
 const menuItems = [
   {
@@ -11,16 +12,16 @@ const menuItems = [
     subTitle: "Dashboard",
   },
   {
-    path: "/dashboard/categories",
-    icon: <CiBookmarkCheck size={40} />,
-    title: "Categories",
-    subTitle: "Categories",
+    path: "/dashboard/rest-todos",
+    icon: <IoCheckboxOutline size={40} />,
+    title: "Rest TODOS",
+    subTitle: "Rest TODOS",
   },
   {
-    path: "/dashboard/logout",
-    icon: <CiLogout size={40} />,
-    title: "Logout",
-    subTitle: "Logout",
+    path: "/dashboard/server-todos",
+    icon: <IoListOutline size={40} />,
+    title: "Server Actions",
+    subTitle: "Server Actions",
   },
 ];
 
