@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import prisma from "@/src/lib/prisma";
 import { NewTodo } from "@/src/todos/components/Newtodo";
 import { TodosGrid } from "@/src/todos/components/TodosGrid";
