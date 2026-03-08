@@ -2,29 +2,30 @@
 
 import { FormEvent, useState } from 'react';
 import { IoTrashOutline } from "react-icons/io5";
-import * as api from '../helpers/todos';
+/* import * as api from '../helpers/todos'; */
+import { addTodo } from '../actions/todo-actions';
 import { useRouter } from 'next/navigation';
 
 
 export const NewTodo = () => {
-    const router = useRouter()
-    const [description, setDescription] = useState("")
+  const router = useRouter()
+  const [description, setDescription] = useState("")
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault()
+  /* const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
 
-        if (!description.trim()) {
-            return
-        }
+    if (!description.trim()) {
+      return
+    }
 
-        try {
-            await api.createTodo(description)
-            setDescription("")
-            router.refresh()
-        }
-        catch (error) {
-            console.error("Error creating todo:", error)
-        }        
+    try {
+      await api.createTodo(description)
+      setDescription("")
+      router.refresh()
+    }
+    catch (error) {
+      console.error("Error creating todo:", error)
+    }
   }
 
   const deleteCompleted = async () => {
@@ -34,10 +35,21 @@ export const NewTodo = () => {
     } catch (error) {
       console.error("Error deleting completed todos:", error);
     }
+  } */
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+
+    if (!description.trim()) return
+
+
+    await addTodo(description)
+    setDescription("")
+    router.refresh()
   }
 
   return (
-    <form  className='flex w-full' onSubmit={handleSubmit}>
+    <form className='flex w-full' onSubmit={handleSubmit}>
       <input type="text"
         name="description"
         value={description}
@@ -48,11 +60,11 @@ export const NewTodo = () => {
       <button type='submit' className="flex items-center justify-center rounded ml-2 bg-sky-500 p-2 text-white hover:bg-sky-700 transition-all">
         Crear
       </button>
-      
+
       <span className='flex flex-1'></span>
 
-      <button 
-        onClick={() => deleteCompleted()}
+      <button
+        /* onClick={() => deleteCompleted()} */
         type='button' className="flex items-center justify-center rounded ml-2 bg-red-400 p-2 text-white hover:bg-red-700 transition-all">
         <IoTrashOutline />
         Borrar Completados

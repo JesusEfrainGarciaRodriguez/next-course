@@ -22,3 +22,16 @@ export const toggleTodo = async (id: string, complete: boolean): Promise<Todo> =
         throw error;
     }
 }
+
+export const addTodo = async (description: string): Promise<Todo> => {
+    try {
+        const newTodo = await prisma.todo.create({
+            data: { description },
+        });
+        revalidatePath("/dashboard/server-todos");
+        return newTodo;
+    } catch (error) {
+        console.error("Error adding todo:", error);
+        throw error;
+    }
+}
