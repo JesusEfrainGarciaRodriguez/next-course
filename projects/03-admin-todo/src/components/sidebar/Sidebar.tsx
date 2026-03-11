@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CiBookmarkCheck, CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
-import { IoCheckboxOutline, IoCodeOutline, IoListOutline } from "react-icons/io5";
+import { IoBasketOutline, IoCheckboxOutline, IoCodeOutline, IoListOutline } from "react-icons/io5";
 
 const menuItems = [
   {
@@ -28,6 +28,12 @@ const menuItems = [
     icon: <IoCodeOutline size={40} />,
     title: "Cookies",
     subTitle: "Cookies",
+  },
+  {
+    path: "/dashboard/products",
+    icon: <IoBasketOutline size={40} />,
+    title: "Products",
+    subTitle: "Manage your products",
   },
 ];
 
