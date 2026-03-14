@@ -26,3 +26,19 @@ export const removeProductFromCart = (productId: string) => {
     delete cart[productId]
     setCookie("cart", JSON.stringify(cart))
 }
+
+export const removeSingleItemFromCart = (productId: string) => {
+    const cart = getCookieCart()
+
+    if (!cart[productId]) {
+        return
+    }
+
+    cart[productId] -= 1
+
+    if (cart[productId] <= 0) {
+        delete cart[productId]
+    }
+
+    setCookie("cart", JSON.stringify(cart))
+}
