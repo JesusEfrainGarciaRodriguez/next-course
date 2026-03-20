@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CiBookmarkCheck, CiLogout } from "react-icons/ci";
+import { CiBookmarkCheck } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
 import { IoBasketOutline, IoCheckboxOutline, IoCodeOutline, IoListOutline, IoPersonOutline } from "react-icons/io5";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
+import LogoutButton from "./LogoutButton";
 
 const menuItems = [
   {
@@ -48,7 +48,7 @@ const menuItems = [
 
 export default async function Sidebar() {
   const session = await getServerSession(authOptions)
-  
+
   return (
     <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
       <div>
@@ -88,10 +88,7 @@ export default async function Sidebar() {
       </div>
 
       <div className="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
-        <button className="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-          <CiLogout />
-          <span className="group-hover:text-gray-700">Logout</span>
-        </button>
+        <LogoutButton />
       </div>
     </aside>
   );
