@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CiBookmarkCheck, CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
-import { IoBasketOutline, IoCheckboxOutline, IoCodeOutline, IoListOutline } from "react-icons/io5";
+import { IoBasketOutline, IoCheckboxOutline, IoCodeOutline, IoListOutline, IoPersonOutline } from "react-icons/io5";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -38,6 +38,12 @@ const menuItems = [
     title: "Products",
     subTitle: "Manage your products",
   },
+  {
+    path: "/dashboard/profile",
+    icon: <IoPersonOutline size={40} />,
+    title: "Perfil",
+    subTitle: "Perfil",
+  },
 ];
 
 export default async function Sidebar() {
@@ -60,7 +66,7 @@ export default async function Sidebar() {
 
         <div className="mt-8 text-center">
           <Image
-            src={session?.user?.image ?? ''}
+            src={session?.user?.image ?? 'https://img.freepik.com/vector-gratis/ilustracion-joven-sonriente_1308-174669.jpg?semt=ais_hybrid&w=740&q=80'}
             alt=""
             className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
             width={100}
