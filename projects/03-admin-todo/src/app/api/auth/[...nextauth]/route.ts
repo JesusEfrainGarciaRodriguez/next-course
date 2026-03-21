@@ -70,7 +70,6 @@ export const authOptions: NextAuthOptions = {
                 session.user.id = token.id
             }
             
-            console.log(session)
             return session
         }
     }

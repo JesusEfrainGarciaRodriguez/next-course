@@ -1,15 +1,20 @@
 'use server';
 
 import prisma from "@/src/lib/prisma";
-import { Todo } from "@/src/app/generated/prisma/client";
+import { Todo } from "@/src/generated/prisma/client";
 import { revalidatePath } from "next/cache";
+import { getUserSessionServer } from "@/src/app/auth/actions/auth-actions";
 
 export const sleep = async (seconds: number = 0) => new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
 export const toggleTodo = async (id: string, complete: boolean): Promise<Todo> => {
     try {
         await sleep(3);
-        const todo = await prisma.todo.findFirst({ where: { id } });
+        const user = await getUserSessionServer();
+        
+        if(!user) throw new Error("User not found");
+
+        const todo = await prisma.todo.findFirst({ where: { id, userId: user?.id} });
         if (!todo) {
             throw new Error("Todo not found");
         }
@@ -28,8 +33,12 @@ export const toggleTodo = async (id: string, complete: boolean): Promise<Todo> =
 
 export const addTodo = async (description: string): Promise<Todo> => {
     try {
+        const user = await getUserSessionServer();
+        
+        if(!user) throw new Error("User not found");
+
         const newTodo = await prisma.todo.create({
-            data: { description },
+            data: { description, userId: user?.id },
         });
         revalidatePath("/dashboard/server-todos");
         return newTodo;
@@ -41,7 +50,11 @@ export const addTodo = async (description: string): Promise<Todo> => {
 
 export const deleteCompleted = async (): Promise<void> => {
     try {
-        await prisma.todo.deleteMany({ where: { completed: true } });
+        const user = await getUserSessionServer();
+        
+        if(!user) throw new Error("User not found");
+
+        await prisma.todo.deleteMany({ where: { completed: true, userId: user?.id} });
         revalidatePath("/dashboard/server-todos");
     } catch (error) {
         console.error("Error deleting completed todos:", error);

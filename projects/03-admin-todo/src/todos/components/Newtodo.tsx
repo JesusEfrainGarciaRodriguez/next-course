@@ -42,7 +42,6 @@ export const NewTodo = () => {
 
     if (!description.trim()) return
 
-
     await addTodo(description)
     setDescription("")
     router.refresh()

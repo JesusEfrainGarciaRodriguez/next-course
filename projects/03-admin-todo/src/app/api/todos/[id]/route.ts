@@ -1,3 +1,5 @@
+import { getUserSessionServer } from '@/src/app/auth/actions/auth-actions'
+import { Todo } from '@/src/generated/prisma/client'
 import prisma from '@/src/lib/prisma'
 import { NextResponse } from 'next/server'
 import * as yup from 'yup'
@@ -6,16 +8,31 @@ interface RouteParams {
     id: string
 }
 
+const getTodo = async( id: string ):Promise<Todo | null> => {
+
+  const user = await getUserSessionServer();
+
+  if ( !user ) {
+    return null;
+  }
+
+  const todo = await prisma.todo.findFirst({ where: { id } });
+
+  if ( todo?.userId !== user.id ) {
+    return null;
+  }
+
+  return todo;
+}
+
+
 export async function GET(
     request: Request,
     { params }: { params: Promise<RouteParams> }
 ) {
     const { id } = await params
 
-    const todo = await prisma.todo
-        .findUnique({
-            where: { id },
-        })
+    const todo = await getTodo(id);
 
     if (!todo) {
         return NextResponse.json({ message: `Todo ${id} not found` }, { status: 404 })
@@ -32,7 +49,7 @@ export async function PUT(
     { params }: { params: Promise<RouteParams> }
 ) {
     const { id } = await params
-    const existingTodo = await prisma.todo.findUnique({ where: { id } })
+    const existingTodo = await getTodo(id);
     if (!existingTodo) {
         return NextResponse.json({ message: `Todo ${id} not found` }, { status: 404 })
     }
